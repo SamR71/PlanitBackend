@@ -2,5 +2,7 @@
     "appService.zipIgnorePattern": [
         "node_modules{,/**}",
         ".vscode{,/**}"
-    ]
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/5caf6607-fdbf-48b9-9181-423e586b78f9/resourceGroups/Planit/providers/Microsoft.Web/sites/myplanit",
+    "appService.deploySubpath": ""
 }
