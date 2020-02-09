@@ -36,7 +36,7 @@ class UserDao {
   }
 
   async find(querySpec) {
-    debug('Querying for items from the database')
+    debug('Querying for user(s) from the database')
     if (!this.container) {
       throw new Error('Collection is not initialized.')
     }
@@ -45,17 +45,16 @@ class UserDao {
   }
 
   async addItem(item) {
-    debug('Adding an item to the database')
-    item.date = Date.now()
-    item.completed = false
+    debug('Sign up a User to the database')
+    
     const { resource: doc } = await this.container.items.create(item)
     return doc
   }
 
   async updateItem(itemId) {
-    debug('Update an item in the database')
+    debug('Update a user in the database')
     const doc = await this.getItem(itemId)
-    doc.completed = true
+    doc.lastSignIn = Date.now();
 
     const { resource: replaced } = await this.container
       .item(itemId, partitionKey)
@@ -64,7 +63,7 @@ class UserDao {
   }
 
   async getItem(itemId) {
-    debug('Getting an item from the database')
+    debug('Getting a user from the database')
     const { resource } = await this.container.item(itemId, partitionKey).read()
     return resource
   }

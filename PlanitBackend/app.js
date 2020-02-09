@@ -1,3 +1,8 @@
+const CosmosClient = require('@azure/cosmos').CosmosClient
+const config = require('./config')
+const UserOps = require('./routes/userops')
+const UserDao = require('./models/userDao')
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -7,8 +12,6 @@ var multer = require('multer');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var loginRouter = require('./routes/login')
 
 var app = express();
 var upload = multer();
@@ -26,9 +29,30 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(upload.array()); 
 app.use(express.static('public'));
 
+
+//Planit App Database:
+const cosmosClient = new CosmosClient({
+  endpoint: config.host,
+  key: config.authKey
+})
+const userDao = new UserDao(cosmosClient, config.databaseId, config.userContainerId)
+const userOps = new UserOps(userDao)
+userDao
+  .init(err => {
+    console.error(err)
+  })
+  .catch(err => {
+    console.error(err)
+    console.error(
+      'Shutting down because there was an error settinig up the database.'
+    )
+    process.exit(1)
+  })
+
+
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/login', loginRouter);
+app.post('/signup', (req, res, next) => userOps.signUpUser(req,res).catch(next));
+app.post('/login', (req, res, next) => userOps.loginUser(req,res).catch(next));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
