@@ -28,6 +28,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(upload.array()); 
 app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'img')));
+app.use('/img',express.static('img'));
+app.use(express.static(path.join(__dirname, 'js')));
+app.use('/js',express.static('js'));
+app.use(express.static(path.join(__dirname, 'css')));
+app.use('/css',express.static('css'));
+app.use(express.static(path.join(__dirname, 'vendor')));
+app.use('/vendor',express.static('vendor'));
+app.use(express.static(path.join(__dirname, 'device-mockups')));
+app.use('/device-mockups',express.static('device-mockups'));
 
 
 //Planit App Database:
@@ -50,7 +60,10 @@ userDao
   })
 
 
-app.use('/', indexRouter);
+app.get('/', function(req,res){
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 app.post('/signup', (req, res, next) => userOps.signUpUser(req,res).catch(next));
 app.post('/login', (req, res, next) => userOps.loginUser(req,res).catch(next));
 
