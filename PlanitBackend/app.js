@@ -39,6 +39,7 @@ app.use('/vendor',express.static('vendor'));
 app.use(express.static(path.join(__dirname, 'device-mockups')));
 app.use('/device-mockups',express.static('device-mockups'));
 
+app.use('/favicon.ico', express.static('img/favicon.ico'));
 
 //Planit App Database:
 const cosmosClient = new CosmosClient({
