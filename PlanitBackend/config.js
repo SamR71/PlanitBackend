@@ -2,7 +2,7 @@ const config = {};
 
 config.host = process.env.HOST || "https://planit.documents.azure.com:443/";
 config.authKey =
-  process.env.AUTH_KEY || "TbzJIPUSXeNTkTRGsmjobXuxEgwjw2lkjtbb4H4VPLh5IwGyWSDx01FYdoqlZ0pXZUJ6kSt5gpUSRsK46ui1aw==";
+  process.env.AUTH_KEY || "";
 config.databaseId = "Planit";
 config.userContainerId = "Users";
 
